@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+		#boxes {  }
+		#boxes > .box { box-sizing: border-box; width: 3em; height: 3em; float: left; margin: .8em; border-radius: 1.5em; position:relative; }
+		#boxes > .box:before,
+		#boxes > .box:after { position:absolute; -webkit-transform:rotate(90deg); top:0; left:0; font-size:25px; }
+		#boxes > .box:before { content:":"; margin:5px 25px 0; }
+		#boxes > .box:after { content:")"; margin:15px 22px; }
+	</style>
+</head>
+<body>
+	<div id="boxes">
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+		<div class="box"></div><div class="box"></div><div class="box"></div>
+	</div>
+</body>
+<script src="page.js" type="text/javascript"></script>
+<script src="buildAnimation.js" type="text/javascript"></script>
+<script src="domless.js" type="text/javascript"></script>
+<script type="text/javascript">
+	PAGE.add("Modules.demo", (function() {
+		var dog = {
+			domless : undefined
+			, boxes : document.getElementById("boxes")
+			, boxesCount : this.boxes.childNodes.length
+			, animations : []
+		}
+
+		function getRandomColor(hLow, hHigh, sLow, sHigh, lLow, lHigh) {
+			var obj = { 
+				h : Math.round(((Math.random() * (hHigh-hLow)) + hLow))
+				, s : Math.round(((Math.random() * (sHigh - sLow)) + sLow))
+				, l : Math.round(((Math.random() * (lHigh - lLow)) + lLow))
+			}
+			return "hsl(" + obj.h + "," + obj.s + "%," + obj.l + "%)"
+		}
+
+		function init() {
+			PAGE.wait("Constructors.Domless", function(Domless) {
+			PAGE.wait("Constructors.BuildAnimation", function(BuildAnimation) {
+
+				var domless = dog.domless = Domless()
+
+				function randomDelay() {
+					return -Math.round(Math.random()*100)/10 + "s"
+				}
+
+				function randomMargin() {
+					//return -Math.round(Math.random()*100)/10 + "s"
+					var randomY    = Math.round(Math.random()*10000)/10000
+					, randomX      = Math.round(Math.random()*10000)/10000
+					, isNegY       = Math.random() > .5
+					, isNegX       = Math.random() > .5
+					, outputTop    = isNegY ? -randomY : randomY
+					, outputLeft   = isNegX ? -randomX : randomX
+					, outputBottom = isNegY ?  randomY : -randomY
+					, outputRight  = isNegX ?  randomX : -randomX
+					, px = "px "
+
+					return "margin:" + outputTop + px + outputRight + px + outputBottom + px + outputLeft + px + ";"
+				}
+
+				var animation = BuildAnimation()
+
+				domless.addStyle("@-webkit-keyframes test", 
+					animation
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add(randomMargin())
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.add("background-color:" + getRandomColor(0,255,0,100,25,80))
+					.build().output)
+
+				for (var x = 0; x < dog.boxesCount; x++) {
+					;(function(x, count) {
+							domless.addStyle("#boxes > .box:nth-child(" + x + ")", "{ -webkit-animation: test 25s infinite; -webkit-animation-delay:" + randomDelay() + "; }")
+					}(x, dog.boxesCount))
+				}
+
+				domless.regenerate()
+
+			})
+			})
+		}
+		init()
+		return dog
+	}()))
+</script>
+</html>
